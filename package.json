@@ -1,0 +1,14 @@
+{
+  "name": "screenlock",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main/app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "horihiro",
+  "license": "ISC",
+  "dependencies": {
+    "lock-system": "^1.3.0"
+  }
+}

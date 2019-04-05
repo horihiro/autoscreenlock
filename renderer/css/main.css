@@ -1,0 +1,31 @@
+video, canvas {
+  width: 300px;
+  height: auto;
+}
+
+canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+div.container {
+  position: relative;
+}
+
+html.countdown {
+  height: 100%;  
+}
+body.countdown {
+  height: 95%;  
+  background-color: rgba(0,0,0,0);
+  height: 95%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+body.countdown>div {
+  color: white;
+  font-family: DSEG14-Classic;
+  font-size: 300px;
+}
