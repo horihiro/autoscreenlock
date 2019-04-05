@@ -51,7 +51,10 @@
       }
       detect();
     })
-    .catch(console.error);
+    .catch((e) => {
+      window.alert(e);
+      ipcRenderer.send('asynchronous-message', {type: 'process', value: 'exit'});
+    });
   });
 }());
 

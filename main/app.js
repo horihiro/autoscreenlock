@@ -26,7 +26,7 @@ const createCountDownWindow = () => {
 };
 const createMainWindow = () => {
 
-  let win = new BrowserWindow({show: false, width: 350, height: 300, maximizable: false, focusable: false, setSkipTaskbar: true, webPreferences: { experimentalFeatures: true } });
+  let win = new BrowserWindow({/* show: false,  */width: 350, height: 300, maximizable: false/* , focusable: false, setSkipTaskbar: true */, webPreferences: { experimentalFeatures: true } });
   win.loadURL('file://' + __dirname + '/../renderer/detector.html');
   win.setMenu(null);
   win.on('closed', function() {
@@ -53,6 +53,8 @@ app.on('ready', function() {
     } else if (arg.type === 'lock' && arg.value) {
       if (!isLocked) showLockScreen();
       if (countdownWin && !countdownWin.isDestroyed()) countdownWin.close();
+    } else if (arg.type === 'process' && arg.value === 'exit') {
+      app.quit();
     }
   });
   electron.powerMonitor.on('lock-screen', () => {
