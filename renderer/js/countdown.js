@@ -30,7 +30,7 @@
   const countdown = () => {
     return new Promise((res) => {
       count.innerText = '';
-      count.style.fontSize = '300px';
+      count.style.fontSize = '15vw';
       const timerId = setInterval(() => {
         if (duration >= 0 ) {
           time.setTime(duration);
@@ -49,7 +49,7 @@
   const postCountdown = () => {
     return new Promise((res) => {
       setTimeout(() => {
-        count.innerHTML = 'SCREEN<br>LOCK';
+        count.innerHTML = 'BYE';
         setTimeout(() => {
           ipcRenderer.send('asynchronous-message', {type: 'lock', value: true});
           res();

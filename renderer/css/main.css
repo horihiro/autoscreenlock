@@ -17,12 +17,12 @@ html.countdown {
   height: 100%;  
 }
 body.countdown {
-  height: 95%;  
   background-color: rgba(0,0,0,0);
-  height: 95%;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 }
 body.countdown>div {
   text-align: center;
