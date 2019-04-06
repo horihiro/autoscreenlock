@@ -27,7 +27,7 @@ body.countdown {
 body.countdown>div {
   text-align: center;
   overflow: hidden;
-  color: white;
+  color: lightgray;
   font-family: DSEG14-Classic;
   font-size: 100px;
 }
