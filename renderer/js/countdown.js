@@ -17,6 +17,8 @@
   let duration = queries["duration"] || 5000;
   const interval = 17;
   let c = 5;
+  const time = new Date();
+ 
   const preCountdown = () => {
     count.innerText = "start";
     return new Promise((res) => {
@@ -51,7 +53,6 @@
       }, 1000);
     });
   };
-  const time = new Date();
   preCountdown()
   .then(countdown)
   .then(postCountdown);
