@@ -2,6 +2,10 @@
 
 This is an electron app to lock screen automatically using web cam.
 
+# Demo
+
+![](https://github.com/horihiro/autoscreenlock/raw/media/demo.gif)
+
 # Usage
 
 ## Install App
