@@ -6,6 +6,7 @@ let mainWindow = null;
 let countdownWin = null;
 let duration = 10000;
 let isLocked = false;
+let countdownId = null;
 
 app.on('window-all-closed', function() {
   // if (process.platform !== 'darwin' && !isLocked) {
@@ -44,10 +45,16 @@ app.on('ready', () => {
       if (currentFaceCount === faceCount) return;
       currentFaceCount = faceCount;
       if (countdownWin && !countdownWin.isDestroyed()) countdownWin.close();
-      if (currentFaceCount > 0) return;
+      if (currentFaceCount > 0) {
+        if (countdownId) clearTimeout(countdownId);
+        countdownId = null;
+        return;
+      }
 
       // mainWindow.flashFrame(true);
-      countdownWin = createCountDownWindow();
+      countdownId = setTimeout(() => {
+        countdownWin = createCountDownWindow();
+      }, 1000);
     } else if (arg.type === 'lock' && arg.value) {
       if (!isLocked) showLockScreen();
       if (countdownWin && !countdownWin.isDestroyed()) countdownWin.close();
@@ -68,10 +75,10 @@ app.on('ready', () => {
   const tray = new Tray(`${__dirname}/../assets/trayicon.png`);
   const contextMenu = Menu.buildFromTemplate([
     {label: 'Watching', type: 'checkbox', checked: true, click: (item) => {
+      if (countdownWin && !countdownWin.isDestroyed()) countdownWin.close();
       if (mainWindow && !mainWindow.isDestroyed()) mainWindow.close();
-      if(item.checked) {
-        mainWindow = createMainWindow();
-      }
+      if(item.checked) mainWindow = createMainWindow();
+
       tray.setImage(`${__dirname}/../assets/trayicon${item.checked ? '' : '_disabled'}.png`)
     }},
     {label: 'Exit', click: () => app.quit()}
@@ -79,14 +86,12 @@ app.on('ready', () => {
   tray.setToolTip('Double click to toggle the watching state.');
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => {
-    if (countdownWin && !countdownWin.isDestroyed()) countdownWin.close();
-
     contextMenu.items[0].click();
   });
 
-  setInterval(() => {
-    if (mainWindow && !mainWindow.isDestroyed()) mainWindow.reload();
-    // app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
-    // app.exit(0)
-  }, 300000);
+  // setInterval(() => {
+  //   if (mainWindow && !mainWindow.isDestroyed()) mainWindow.reload();
+  //   // app.relaunch({ args: process.argv.slice(1).concat(['--relaunch']) })
+  //   // app.exit(0)
+  // }, 300000);
 });
