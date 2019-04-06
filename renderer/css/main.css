@@ -25,7 +25,9 @@ body.countdown {
   align-items: center;
 }
 body.countdown>div {
+  text-align: center;
+  overflow: hidden;
   color: white;
   font-family: DSEG14-Classic;
-  font-size: 300px;
+  font-size: 100px;
 }

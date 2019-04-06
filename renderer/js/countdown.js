@@ -16,17 +16,21 @@
 
   let duration = queries["duration"] || 5000;
   const interval = 17;
-  let c = 5;
   const time = new Date();
  
   const preCountdown = () => {
-    count.innerText = "start";
+    count.innerHTML = 'Nobody is found';
     return new Promise((res) => {
-      setTimeout(res, 1000);
+      setTimeout(() => {
+        count.innerText = 'Countdown start';
+        setTimeout(res, 1000);
+      }, 1000);
     });
   };
   const countdown = () => {
-    return new Promise((res) => {    
+    return new Promise((res) => {
+      count.innerText = '';
+      count.style.fontSize = '300px';
       const timerId = setInterval(() => {
         if (duration >= 0 ) {
           time.setTime(duration);
@@ -45,7 +49,7 @@
   const postCountdown = () => {
     return new Promise((res) => {
       setTimeout(() => {
-        count.innerText = 'LOCK';
+        count.innerHTML = 'SCREEN<br>LOCK';
         setTimeout(() => {
           ipcRenderer.send('asynchronous-message', {type: 'lock', value: true});
           res();
@@ -53,6 +57,7 @@
       }, 1000);
     });
   };
+
   preCountdown()
   .then(countdown)
   .then(postCountdown);
