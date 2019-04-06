@@ -46,7 +46,9 @@
         })
         .catch(()=>{})
         .then(() => {
-          requestAnimationFrame(detect);
+          setTimeout(() => {
+            requestAnimationFrame(detect);
+          }, 500);
         });
       }
       detect();
