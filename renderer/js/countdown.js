@@ -17,13 +17,30 @@
   let duration = queries["duration"] || 5000;
   const interval = 17;
   let c = 5;
-  const preProcess = () => {
+  const preCountdown = () => {
     count.innerText = "start";
     return new Promise((res) => {
       setTimeout(res, 1000);
     });
   };
-  const postProcess = () => {
+  const countdown = () => {
+    return new Promise((res) => {    
+      const timerId = setInterval(() => {
+        if (duration >= 0 ) {
+          time.setTime(duration);
+          count.innerText = `${('0'+time.getMinutes()).slice(-2)}:${('0'+time.getSeconds()).slice(-2)}.${('00'+time.getMilliseconds()).slice(-3)}`;
+          if (duration < 3000) count.style.color = 'orange';
+          duration -= interval;
+        } else {
+          count.innerText = '00:00.000';
+          count.style.color = 'red';
+          clearInterval(timerId);
+          res();
+        }
+      }, interval);
+    });
+  };
+  const postCountdown = () => {
     return new Promise((res) => {
       setTimeout(() => {
         count.innerText = 'LOCK';
@@ -35,21 +52,7 @@
     });
   };
   const time = new Date();
-  preProcess()
-  .then(() => new Promise((res) => {    
-    const timerId = setInterval(() => {
-      if (duration >= 0 ) {
-        time.setTime(duration);
-        count.innerText = `${('0'+time.getMinutes()).slice(-2)}:${('0'+time.getSeconds()).slice(-2)}.${('00'+time.getMilliseconds()).slice(-3)}`;
-        if (duration < 3000) count.style.color = 'orange';
-        duration -= interval;
-      } else {
-        count.innerText = '00:00.000';
-        count.style.color = 'red';
-        clearInterval(timerId);
-        res();
-      }
-    }, interval);
-    }))
-  .then(postProcess);
+  preCountdown()
+  .then(countdown)
+  .then(postCountdown);
 })();
