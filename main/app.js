@@ -72,6 +72,7 @@ app.on('ready', () => {
       if(item.checked) {
         mainWindow = createMainWindow();
       }
+      tray.setImage(`${__dirname}/../assets/trayicon${item.checked ? '' : '_disabled'}.png`)
     }},
     {label: 'Exit', click: () => app.quit()}
   ]);
@@ -79,13 +80,8 @@ app.on('ready', () => {
   tray.setContextMenu(contextMenu);
   tray.on('double-click', () => {
     if (countdownWin && !countdownWin.isDestroyed()) countdownWin.close();
-    if (mainWindow && !mainWindow.isDestroyed()) {
-      contextMenu.items[0].checked = false;
-      mainWindow.close();
-    } else {
-      contextMenu.items[0].checked = true;
-      mainWindow = createMainWindow();
-    }
+
+    contextMenu.items[0].click();
   });
 
   setInterval(() => {
