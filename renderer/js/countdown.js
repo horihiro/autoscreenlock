@@ -1,7 +1,7 @@
 (() => {
   const { ipcRenderer } = require('electron');
 
-  const count = document.querySelector('body.countdown>div');
+  const $count = document.querySelector('body.countdown>div');
   const queries = location.search.replace(/\?/,'').split(/&/).map((kv) => { 
     const pair = kv.split(/=/);
     return {
@@ -19,27 +19,31 @@
   const time = new Date();
  
   const preCountdown = () => {
-    count.innerHTML = 'Nobody is found';
+    $count.innerHTML = 'Nobody is found';
     return new Promise((res) => {
       setTimeout(() => {
-        count.innerText = 'Countdown start';
-        setTimeout(res, 1000);
+        $count.innerText = 'Countdown start';
+        setTimeout(() => {
+          time.setTime(duration);
+          $count.innerText = '';
+          $count.style.fontSize = '15vw';
+          $count.innerText = `${('0'+time.getMinutes()).slice(-2)}:${('0'+time.getSeconds()).slice(-2)}.${('00'+time.getMilliseconds()).slice(-3)}`;
+          setTimeout(res, 2000);
+        }, 1000);
       }, 1000);
     });
   };
   const countdown = () => {
     return new Promise((res) => {
-      count.innerText = '';
-      count.style.fontSize = '15vw';
       const timerId = setInterval(() => {
         if (duration >= 0 ) {
           time.setTime(duration);
-          count.innerText = `${('0'+time.getMinutes()).slice(-2)}:${('0'+time.getSeconds()).slice(-2)}.${('00'+time.getMilliseconds()).slice(-3)}`;
-          if (duration < 3000) count.style.color = 'orange';
+          $count.innerText = `${('0'+time.getMinutes()).slice(-2)}:${('0'+time.getSeconds()).slice(-2)}.${('00'+time.getMilliseconds()).slice(-3)}`;
+          if (duration < 3000) $count.style.color = 'orange';
           duration -= interval;
         } else {
-          count.innerText = '00:00.000';
-          count.style.color = 'red';
+          $count.innerText = '00:00.000';
+          $count.style.color = 'red';
           clearInterval(timerId);
           res();
         }
@@ -49,7 +53,7 @@
   const postCountdown = () => {
     return new Promise((res) => {
       setTimeout(() => {
-        count.innerHTML = 'BYE';
+        $count.innerHTML = 'BYE';
         setTimeout(() => {
           ipcRenderer.send('asynchronous-message', {type: 'lock', value: true});
           res();
