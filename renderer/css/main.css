@@ -24,10 +24,46 @@ body.countdown {
   align-items: center;
   overflow: hidden;
 }
-body.countdown>div {
+body.countdown>div.msg {
   text-align: center;
   overflow: hidden;
   color: lightgray;
   font-family: DSEG14-Classic;
   font-size: 100px;
+}
+
+body.countdown>div.bg, body.countdown>img.ss {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: absolute;
+  display: none;
+}
+
+body.countdown>div.bg {
+  background-color: black;
+}
+
+@keyframes closing {
+  0% {
+    width: 100%;
+    height: 100%;
+    left: 0;
+    top: 0;
+    }
+
+  50% {
+    width: 100%;
+    height: 2px;
+    left: 0;
+    top: calc(50% - 1px);
+  }
+
+  100% {
+    width: 2px;
+    height: 2px;
+    left: calc(50% - 1px);
+    top: calc(50% - 1px);
+  }
 }

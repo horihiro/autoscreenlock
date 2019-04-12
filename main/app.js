@@ -15,7 +15,7 @@ app.on('window-all-closed', function() {
 });
 
 const createCountDownWindow = () => {
-  let win = new BrowserWindow({fullscreen: true, frame: false, alwaysOnTop: true, transparent: true, focusable: false, setSkipTaskbar: true});
+  let win = new BrowserWindow({fullscreen: true, frame: false, alwaysOnTop: true, transparent: true, focusable: false, setSkipTaskbar: true, webPreferences: { experimentalFeatures: true } });
   win.loadURL(`file://${__dirname}/../renderer/countdown.html?duration=${duration}`);
   win.setIgnoreMouseEvents(true);
   win.on('closed', ()  => {
@@ -57,13 +57,14 @@ app.on('ready', () => {
       }, 1000);
     } else if (arg.type === 'lock' && arg.value) {
       if (!isLocked) showLockScreen();
-      if (countdownWin && !countdownWin.isDestroyed()) countdownWin.close();
+      // if (countdownWin && !countdownWin.isDestroyed()) countdownWin.close();
     } else if (arg.type === 'process' && arg.value === 'exit') {
       app.quit();
     }
   });
   powerMonitor.on('lock-screen', () => {
     isLocked = true;
+
     if (countdownWin && !countdownWin.isDestroyed()) countdownWin.close();
     if (mainWindow && !mainWindow.isDestroyed()) mainWindow.close();
   });
@@ -80,6 +81,10 @@ app.on('ready', () => {
       if(item.checked) mainWindow = createMainWindow();
 
       tray.setImage(`${__dirname}/../assets/trayicon${item.checked ? '' : '_disabled'}.png`)
+    }},
+    {label: 'DevTool', click: () => {
+      if (mainWindow && !mainWindow.isDestroyed()) mainWindow.toggleDevTools();
+      // if (countdownWin && !countdownWin.isDestroyed()) countdownWin.toggleDevTools();
     }},
     {label: 'Exit', click: () => app.quit()}
   ]);

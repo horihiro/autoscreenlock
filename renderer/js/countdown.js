@@ -1,7 +1,7 @@
 (() => {
-  const { ipcRenderer } = require('electron');
+  const { ipcRenderer, screen, desktopCapturer } = require('electron');
 
-  const $count = document.querySelector('body.countdown>div');
+  const $count = document.querySelector('body.countdown>div.msg');
   const queries = location.search.replace(/\?/,'').split(/&/).map((kv) => { 
     const pair = kv.split(/=/);
     return {
@@ -54,9 +54,25 @@
     return new Promise((res) => {
       setTimeout(() => {
         $count.innerHTML = 'BYE';
+        ss = document.querySelector('img.ss');
+        bg = document.querySelector('div.bg');
+        desktopCapturer.getSources({types:['screen'], thumbnailSize: screen.getPrimaryDisplay().size}, function(error, sources) {
+          if (error) return console.log(error)
+          sources.forEach(function(source) {
+            if (source.name !== "Screen 1") return;
+            ss.src = source.thumbnail.toDataURL();
+          });
+        });
         setTimeout(() => {
-          ipcRenderer.send('asynchronous-message', {type: 'lock', value: true});
-          res();
+          ss.style.display = bg.style.display = 'block';
+          ss.addEventListener('animationend', () => {
+            ss.style.display = 'none';
+            setTimeout(() => {
+              ipcRenderer.send('asynchronous-message', {type: 'lock', value: true});
+              res();
+            }, 1000);
+          });
+          ss.style.animation = 'closing 0.3s ease 0s 1 alternate forwards running';
         }, 1000);
       }, 1000);
     });
